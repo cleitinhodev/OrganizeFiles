@@ -101,7 +101,7 @@ O **Organize Files** faz uso de diversas bibliotecas de código aberto, e gostar
 
 The renaming process is simple and fast. Follow these steps:
 
-1. **Select the folder**: Choose the directory containing the files you want to rename. You can do this manually or by clicking the "Browse" button.
+1. **Select the folder**: Choose the directory containing the files you want to rename. You can do this manually or by clicking the "Search" button.
 
 2. **Choose the organization method**:
    - **Type**: Organizes the files into folders named after their respective formats, e.g., .mp3 files will be placed into a folder called "MP3".
