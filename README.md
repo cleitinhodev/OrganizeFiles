@@ -2,7 +2,7 @@
 
 ## Download
 
-[Download Rename This (Win 10/11)](https://www.bugzinho.com/organizefiles-br)
+[Organize Files (Win 10/11)](https://www.bugzinho.com/organizefiles-br)
 
 ## Apresentação
 
@@ -91,7 +91,7 @@ O **Organize Files** faz uso de diversas bibliotecas de código aberto, e gostar
 
 ## Download
 
-[Download Rename This (Win 10/11)](https://www.bugzinho.com/organizefiles)
+[Organize Files (Win 10/11)](https://www.bugzinho.com/organizefiles)
 
 ## Overview
 
