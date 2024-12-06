@@ -1,4 +1,4 @@
-# Organize Files!
+# Organize Files
 
 ## Download
 
@@ -87,7 +87,7 @@ O **Organize Files** faz uso de diversas bibliotecas de código aberto, e gostar
 ---
 
 
-# Organize Files!
+# Organize Files
 
 ## Download
 
