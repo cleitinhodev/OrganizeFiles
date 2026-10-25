@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "images",
+      "names": {"pt_BR": "Imagens", "en": "Images"},
+      "color": "#7C6CF0",
+      "extensions": ["jpg", "jpeg", "png", "gif", "bmp", "webp", "tif", "tiff", "heic", "heif", "svg", "ico", "raw", "cr2", "nef", "arw", "dng", "psd", "xcf", "avif"]
+    },
+    {
+      "id": "documents",
+      "names": {"pt_BR": "Documentos", "en": "Documents"},
+      "color": "#3BA7F5",
+      "extensions": ["pdf", "doc", "docx", "odt", "rtf", "txt", "md", "xls", "xlsx", "ods", "csv", "ppt", "pptx", "odp", "epub", "mobi", "pages", "numbers", "key", "tex"]
+    },
+    {
+      "id": "videos",
+      "names": {"pt_BR": "Vídeos", "en": "Videos"},
+      "color": "#F2557A",
+      "extensions": ["mp4", "mkv", "avi", "mov", "wmv", "flv", "webm", "m4v", "mpg", "mpeg", "3gp", "ts"]
+    },
+    {
+      "id": "music",
+      "names": {"pt_BR": "Músicas", "en": "Music"},
+      "color": "#F5A623",
+      "extensions": ["mp3", "wav", "flac", "aac", "ogg", "oga", "m4a", "wma", "opus", "aiff", "mid", "midi"]
+    },
+    {
+      "id": "archives",
+      "names": {"pt_BR": "Compactados", "en": "Archives"},
+      "color": "#2EC4A6",
+      "extensions": ["zip", "rar", "7z", "tar", "gz", "bz2", "xz", "zst", "tar.gz", "tar.bz2", "tar.xz", "tgz", "iso", "img", "cab"]
+    },
+    {
+      "id": "installers",
+      "names": {"pt_BR": "Instaladores", "en": "Installers"},
+      "color": "#E86F3C",
+      "extensions": ["exe", "msi", "msix", "appx", "dmg", "pkg", "deb", "rpm", "apk", "appimage", "flatpakref", "snap", "bat", "cmd"]
+    },
+    {
+      "id": "code",
+      "names": {"pt_BR": "Código", "en": "Code"},
+      "color": "#5DD39E",
+      "extensions": ["py", "js", "ts", "tsx", "jsx", "html", "htm", "css", "scss", "json", "xml", "yml", "yaml", "toml", "ini", "c", "h", "cpp", "hpp", "cs", "java", "kt", "go", "rs", "rb", "php", "sh", "ps1", "sql", "lua", "ipynb", "swift", "dart"]
+    }
+  ],
+  "other": {
+    "id": "other",
+    "names": {"pt_BR": "Outros", "en": "Others"},
+    "color": "#8A8FA3"
+  }
+}

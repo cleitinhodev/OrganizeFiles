@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "organizefiles"
+version = "2.0.0"
+description = "Organize pastas com segurança: prévia, backup, desfazer e proteção de arquivos sensíveis."
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "CleitinhoDEV" }]
+requires-python = ">=3.10"
+dependencies = [
+    "PySide6>=6.6,<7",
+    "Send2Trash>=1.8",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: OS Independent",
+    "Environment :: X11 Applications :: Qt",
+    "Topic :: System :: Filesystems",
+]
+
+[project.optional-dependencies]
+exif = ["Pillow>=10"]
+dev = ["pytest>=8", "pytest-qt>=4.4", "Pillow>=10", "pyinstaller>=6.3"]
+
+[project.urls]
+Homepage = "https://github.com/cleitinhodev/OrganizeFiles"
+
+[project.scripts]
+organizefiles-cli = "organizefiles.cli:main"
+
+[project.gui-scripts]
+organizefiles = "organizefiles.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["organizefiles*"]
+
+[tool.setuptools.package-data]
+organizefiles = ["resources/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
