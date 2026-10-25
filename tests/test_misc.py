@@ -1,3 +1,4 @@
+import os
 import json
 
 import pytest
@@ -49,7 +50,7 @@ def test_cli_dry_run_moves_nothing(folder, capsys):
     make(folder, "a.jpg")
     assert cli.main([str(folder), "--modo", "tipo", "--dry-run"]) == 0
     out = capsys.readouterr().out
-    assert "JPG/a.jpg" in out
+    assert os.path.join("JPG", "a.jpg") in out
     assert (folder / "a.jpg").exists()
 
 

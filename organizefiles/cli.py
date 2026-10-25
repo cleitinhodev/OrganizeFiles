@@ -73,7 +73,19 @@ def _print_plan(plan, limit: int = 200) -> None:
     print("Por categoria:", ", ".join(f"{k}: {c} ({human_size(b)})" for k, (c, b) in plan.stats_by_category().items()))
 
 
+def _safe_console() -> None:
+    """Evita UnicodeEncodeError em consoles/pipes que não são UTF-8 (ex.: cp1252 no Windows)."""
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            try:
+                reconfigure(errors="replace")
+            except (ValueError, OSError):
+                pass
+
+
 def main(argv: list[str] | None = None) -> int:
+    _safe_console()
     args = build_parser().parse_args(argv)
     set_language(args.lang)
     setup_logging()
