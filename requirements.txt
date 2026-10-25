@@ -1,0 +1,4 @@
+# Dependências para rodar a partir do código-fonte (equivalente a: pip install -e ".[exif]")
+PySide6>=6.6,<7
+Send2Trash>=1.8
+Pillow>=10

@@ -1,179 +1,166 @@
-# Organize Files
+# 📁 Organize Files 2.0
 
-## Download
+Organize pastas bagunçadas (como **Downloads** ou **Área de Trabalho**) em poucos cliques, **vendo antes
+como tudo vai ficar**. Com backup, desfazer, proteção de arquivos sensíveis e tratamento de duplicados.
 
-[Organize Files (Win 10/11)](https://www.bugzinho.com/organizefiles-br)
+> **English version below.** · Interface em **português (Brasil)** e **inglês**.
 
-## Apresentação
+![Prévia de como a pasta vai ficar](docs/screenshots/04-preview-compacto-dark.png)
 
-**Organize Files** é uma ferramenta objetiva feita para te ajudar a organizar seus arquivos de uma forma mais rápida e dinâmica, separando cada um deles em pastas conforme o padrão selecionado pelo usuário.
+| Gráfico de tipos de arquivo | Detalhes de cada arquivo (tema claro) |
+|---|---|
+| ![Gráfico](docs/screenshots/03-grafico-dark.png) | ![Detalhes](docs/screenshots/02-detalhes-light.png) |
 
-## Funcionamento
+## ✨ Novidades da versão 2.0
 
-O processo de renomeação é simples e rápido. Siga estas etapas:
+A versão 2.0 foi reescrita do zero em **PySide6 (Qt 6)**. Os scripts antigos em CustomTkinter estão em [`legacy/`](legacy/).
 
-1. **Selecione a pasta**: Escolha o diretório contendo os arquivos que deseja renomear. Você pode fazer isso manualmente ou clicando no botão "Buscar".
+- **Prévia "como ficará"**: uma árvore com as pastas que serão criadas e o que vai para cada uma. **Nada é movido antes de você confirmar.**
+- **Gráfico de tipos de arquivo**: gráfico de rosca por categoria, por quantidade ou por tamanho, com legenda e porcentagens.
+- **Tabela de detalhes** com busca e filtros (renomeados, duplicados, sensíveis, ignorados) e o motivo de cada decisão.
+- **4 modos de organização**:
+  - **Categorias inteligentes**: Imagens, Documentos, Vídeos, Músicas, Compactados, Código, Instaladores…
+  - **Por extensão**: o antigo modo "Tipo"; uma pasta por formato (PDF, MP3…).
+  - **Por data**: Ano/Mês. Para fotos, usa a data EXIF quando ela existe.
+  - **Alfabética**: A–Z, 0-9 e Outros.
+- **Duplicados**: detectados por conteúdo (SHA-256, não só pelo nome). Você escolhe entre manter o original e enviar as cópias para a **lixeira**, apenas pular, manter o mais novo, ou ignorar.
+- **Subpastas (opcional)**: pastas de projetos (`.git`, `package.json`, `pyproject.toml`…) nunca são desmontadas.
+- **Trabalho em segundo plano**: análise e organização rodam em uma *thread*, com barra de progresso e botão **Cancelar**, e a janela não trava.
+- **Desfazer a última organização** com um clique.
+- **Tema claro/escuro**, arrastar e soltar uma pasta na janela, e preferências salvas.
+- **Linha de comando (CLI)** para usar em scripts.
 
-2. **Escolha o método de organização**:
-   - **Tipo**: Organiza os arquivos em pastas com nomes dos seus respectivos formatos, ou seja, os arquivos .mp3, serão enviados a uma pasta chamada "MP3".
-   - **Data**: Organiza os arquivos com base na data de modificação, criando pastas com o ANO e sub pastas com o MÊS.
-   - **ABC**: Organiza os arquivos em pastas por ordem alfabética.
+## 🛡️ Segurança em camadas
 
-4. **Organize tudo**: Após configurar tudo corretamente, basta clicar em "Organizar" e aguardar o processo ser concluído. O tempo de execução pode variar dependendo da quantidade de arquivos na pasta.
+O antigo programa podia **sobrescrever arquivos com o mesmo nome** e não tinha como voltar atrás. Agora:
 
-Para mais informações, acesse o site oficial: [Bugzinho.com](https://www.bugzinho.com)
+1. **Nunca sobrescreve**: se o destino já existir, o arquivo vira `nome (1).ext`, `nome (2).ext`… (sem diferenciar maiúsculas de minúsculas, como no Windows/macOS).
+2. **Pastas perigosas são bloqueadas**: raiz do disco, `C:\Windows`, `Program Files`, `AppData`, `/usr`, `/etc`, `/System`, `~/Library`, `~/.ssh`, `~/.config`… Organizar a **pasta pessoal inteira** exige digitar `ORGANIZAR` para confirmar.
+3. **Arquivos sensíveis ficam no lugar**: chaves (`id_rsa`, `.pem`, `.pfx`), `.env`, cofres de senha (`.kdbx`), carteiras, bancos de dados e nomes como "senha" ou "password" **não são movidos por padrão**. Se você decidir incluí-los, aparece um **aviso listando cada um**.
+   ![Aviso de arquivos sensíveis](docs/screenshots/05-aviso-sensiveis.png)
+4. **Arquivos sensíveis nunca vão para a lixeira** como "duplicados", a menos que você permita explicitamente (CLI: `--permitir-lixeira-sensiveis`).
+5. **Arquivos de sistema, ocultos e temporários são ignorados**: `desktop.ini`, `.DS_Store`, `Thumbs.db`, downloads incompletos (`.crdownload`, `.part`) e atalhos. O próprio executável do programa também nunca é movido.
+6. **Backup opcional antes de mover**: um **ZIP** ou uma **cópia da pasta**, guardado na pasta de dados do app.
+7. **Diário de desfazer**: cada movimentação é registrada em JSON, salvo de forma atômica durante a execução. Se o programa fechar no meio, o desfazer ainda funciona.
+8. **Exclusões vão para a lixeira do sistema** (via Send2Trash), nunca são apagadas direto.
+9. **Log detalhado** de tudo o que foi feito, com rotação automática.
 
-## Avisos Importantes
+## 🚀 Como usar
 
-- **Seleção da pasta**: Certifique-se de selecionar a pasta correta, pois todos os arquivos nela serão movidos. Caso não queira mudar algum arquivo, mova-o para outro diretório antes de iniciar o processo.
+### Executável pronto
+Baixe o arquivo do seu sistema na aba **Actions** (artefatos do último build) ou em **Releases**:
+`OrganizeFiles-windows-*.exe`, `OrganizeFiles-macos-*.zip` (app) ou `OrganizeFiles-linux-*`.
 
-- **Backup**: Antes de executar o programa, é altamente recomendado que você faça um backup dos arquivos, caso ocorra algum erro durante o processo.
+> No macOS o app não é assinado. Na primeira vez, abra com **botão direito → Abrir**.
 
-## Considerações Finais
+### A partir do código-fonte (Python 3.10+)
+```bash
+git clone https://github.com/cleitinhodev/OrganizeFiles.git
+cd OrganizeFiles
+git checkout revitalize-pyside6
+python -m venv .venv
+# Windows: .venv\Scripts\activate   |   Linux/macOS: source .venv/bin/activate
+pip install -e ".[exif]"        # ou: pip install -r requirements.txt
+python -m organizefiles          # abre a interface
+```
 
-Fico feliz em compartilhar esta ferramenta com a comunidade! É um prazer buscar soluções práticas para facilitar a vida de todos. Não tenho interesse em lucrar com isso, mas caso queira me ajudar com alguma contribuição, aqui está o link do meu Patreon: [Patreon - CleitinhoDEV](https://www.patreon.com/CleitinhoDEV).
+### Linha de comando
+```bash
+# só ver a prévia (não mexe em nada)
+python -m organizefiles ~/Downloads --dry-run
 
-Agradeço pela atenção e espero que faça bom uso do meu software! :)
+# organizar por categoria, com backup ZIP e duplicados para a lixeira
+python -m organizefiles ~/Downloads --backup zip --duplicados trash
 
-By CLeitinhoDEV
+# por data (ano/mês), incluindo subpastas, sem perguntar
+python -m organizefiles ~/Fotos --modo data --recursivo --sim
 
-## Créditos e Agradecimentos
+# desfazer a última organização
+python -m organizefiles --desfazer
+```
+Modos: `categoria` (padrão), `extensao` (ou `tipo`), `data`, `abc`. Veja todas as opções com `--help`.
+Depois de `pip install`, os comandos `organizefiles` (interface) e `organizefiles-cli` também ficam disponíveis.
 
-O **Organize Files** faz uso de diversas bibliotecas de código aberto, e gostaríamos de expressar nossa gratidão aos desenvolvedores dessas ferramentas poderosas. Abaixo estão as bibliotecas utilizadas no projeto, seus respectivos créditos e os links para as licenças correspondentes:
+## ⚙️ Personalizar categorias
+Copie [`organizefiles/resources/default_rules.json`](organizefiles/resources/default_rules.json) para
+`rules.json` dentro da **pasta de dados** e edite os nomes, as cores e as extensões. Na CLI, também dá para usar `--regras arquivo.json`.
 
-### os
-**Description**: Módulo da biblioteca padrão do Python que fornece uma maneira de interagir com o sistema operacional, como manipulação de arquivos e diretórios.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [os module documentation](https://docs.python.org/3/library/os.html)
+**Pasta de dados** (diários de desfazer, backups, logs e `rules.json`). O botão "Abrir pasta de dados" na interface abre essa pasta:
 
-### shutil
-**Description**: Módulo da biblioteca padrão do Python que oferece funções de alto nível para manipulação de arquivos e coleções de arquivos, como copiar e mover arquivos.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [shutil module documentation](https://docs.python.org/3/library/shutil.html)
+| Sistema | Local |
+|---|---|
+| Windows | `%APPDATA%\OrganizeFiles` |
+| macOS | `~/Library/Application Support/OrganizeFiles` |
+| Linux | `~/.local/share/organizefiles` (ou `$XDG_DATA_HOME`) |
 
-### CustomTkinter
-**Description**: Biblioteca que fornece uma versão modernizada do Tkinter para criar interfaces gráficas com um design mais contemporâneo.  
-**License**: MIT License  
-[Link to License](https://opensource.org/licenses/MIT)  
-**Credits**: [CustomTkinter GitHub](https://github.com/TomSchimansky/CustomTkinter)
+Para trocar o local, defina a variável `ORGANIZEFILES_DATA_DIR`.
 
-### filedialog
-**Description**: Módulo da biblioteca Tkinter, parte da biblioteca padrão do Python, usado para criar caixas de diálogo para abrir ou salvar arquivos.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [filedialog module documentation](https://docs.python.org/3/library/tkinter.filedialog.html)
+## 🧑‍💻 Desenvolvimento
+```bash
+pip install -e ".[dev]"
+pytest -q                       # no Linux sem tela: QT_QPA_PLATFORM=offscreen pytest -q
+python scripts/build_exe.py     # gera o executável em dist/ (PyInstaller)
+```
 
-### datetime
-**Description**: Módulo da biblioteca padrão do Python para manipulação de datas e horários.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [datetime module documentation](https://docs.python.org/3/library/datetime.html)
+Estrutura do projeto:
+```
+organizefiles/
+├── core/         # lógica sem interface (testável)
+│   ├── planner.py     # monta o plano / prévia
+│   ├── executor.py    # executa o plano e desfaz
+│   ├── safety.py      # pastas bloqueadas, sensíveis, ocultos
+│   ├── duplicates.py  # SHA-256 em etapas (tamanho → início → completo)
+│   ├── journal.py     # diário de desfazer
+│   ├── backup.py      # ZIP / cópia
+│   └── rules.py, naming.py, dates.py, hashing.py, models.py
+├── gui/          # PySide6: janela, prévia, gráfico, tema, workers (QThread)
+├── cli.py        # linha de comando
+├── i18n.py       # textos pt-BR / en
+└── resources/    # regras padrão e ícone
+tests/            # pytest + pytest-qt
+legacy/           # versão 1.x (CustomTkinter), só para referência
+```
 
-### threading
-**Description**: Módulo da biblioteca padrão do Python que fornece suporte para execução de threads, permitindo a execução de múltiplas tarefas simultaneamente.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [threading module documentation](https://docs.python.org/3/library/threading.html)
+O **GitHub Actions** roda os testes no Windows, no macOS e no Linux e gera os executáveis com PyInstaller.
+Uma tag `v*` publica tudo como Release.
 
-### webbrowser
-**Description**: Módulo da biblioteca padrão do Python que permite o controle do navegador web diretamente pelo código, como abrir URLs.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [webbrowser module documentation](https://docs.python.org/3/library/webbrowser.html)
-
+## 📄 Licença
+[GPL-3.0](LICENSE) © CleitinhoDEV
 
 ---
 
+# 🇺🇸 English
 
-# Organize Files
+**Organize Files** tidies up messy folders (Downloads, Desktop…) and **shows you the result before anything is moved**.
+Version 2.0 is a full rewrite in **PySide6 (Qt 6)**, with an English and Brazilian Portuguese UI.
 
-## Download
+![File types chart](docs/screenshots/03-grafico-dark-en.png)
 
-[Organize Files (Win 10/11)](https://www.bugzinho.com/organizefiles)
+**Features**
+- A **"Result preview" tree**, a details table with filters, and a **file-type donut chart** (by count or size).
+- **Modes**: smart categories, by extension, by date (Year/Month, using EXIF for photos), and alphabetical.
+- **Duplicate detection** by content (SHA-256). Copies can go to the **system trash**, be skipped, or keep only the newest file.
+- Optional recursion, which never breaks apart project folders (`.git`, `package.json`…).
+- A background worker (QThread) with progress and **Cancel**. **One-click undo**. Light and dark themes. Drag and drop.
+- A **CLI**: `python -m organizefiles <folder> [--dry-run] [--modo categoria|extensao|data|abc] [--backup zip|folder] [--duplicados trash|skip|newest] [--desfazer]`.
 
-## Overview
+**Safety**
+- Files are never overwritten (`name (1).ext`).
+- System and root folders are blocked. Organizing your whole home folder requires typed confirmation.
+- Sensitive files (keys, `.env`, password vaults, wallets…) are left in place by default. Including them shows a warning with the full list, and they are never trashed as duplicates unless you explicitly allow it.
+- System, hidden, temporary, and partial-download files are skipped.
+- Optional ZIP or folder backup. An atomic undo journal. Deletions only go to the trash. Rotating logs.
 
-**Organize Files** is a straightforward tool designed to help you organize your files more quickly and dynamically, sorting each one into folders based on the pattern selected by the user.
+**Run from source**
+```bash
+pip install -e ".[exif]"
+python -m organizefiles          # GUI
+python -m organizefiles --help   # CLI
+```
+Custom categories: copy `organizefiles/resources/default_rules.json` to `rules.json` in the app data folder
+(`%APPDATA%\OrganizeFiles`, `~/Library/Application Support/OrganizeFiles`, or `~/.local/share/organizefiles`).
 
-## How It Works
+**Development**: `pip install -e ".[dev]" && pytest -q`. To build: `python scripts/build_exe.py`.
+CI runs the tests and builds Windows, macOS, and Linux executables.
 
-The renaming process is simple and fast. Follow these steps:
-
-1. **Select the folder**: Choose the directory containing the files you want to rename. You can do this manually or by clicking the "Search" button.
-
-2. **Choose the organization method**:
-   - **Type**: Organizes the files into folders named after their respective formats, e.g., .mp3 files will be placed into a folder called "MP3".
-   - **Date**: Organizes the files based on the modification date, creating folders with the YEAR and subfolders with the MONTH.
-   - **ABC**: Organizes the files into folders alphabetically.
-
-4. **Organize everything**: After configuring everything correctly, just click on "Organize" and wait for the process to complete. The execution time may vary depending on the number of files in the folder.
-
-For more information, visit the official website: [Bugzinho.com](https://www.bugzinho.com)
-
-## Important Notices
-
-- **Folder selection**: Make sure to select the correct folder, as all files within it will be moved. If you don't want to move a particular file, move it to another directory before starting the process.
-
-- **Backup**: Before running the program, it is highly recommended that you back up your files in case something goes wrong during the process.
-
-## Final Considerations
-
-I'm happy to share this tool with the community! It's a pleasure to look for practical solutions to make everyone's life easier. I have no intention of profiting from this, but if you'd like to support me with a contribution, here's my Patreon link: [Patreon - CleitinhoDEV](https://www.patreon.com/CleitinhoDEV).
-
-Thank you for your attention, and I hope you make good use of my software! :)
-
-By CLeitinhoDEV
-
-## Credits and Acknowledgments
-
-**Organize Files** uses several open-source libraries, and we would like to express our gratitude to the developers of these powerful tools. Below are the libraries used in the project, their respective credits, and links to the corresponding licenses:
-
-### os
-**Description**: A module from the Python standard library that provides a way to interact with the operating system, such as file and directory manipulation.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [os module documentation](https://docs.python.org/3/library/os.html)
-
-### shutil
-**Description**: A module from the Python standard library that provides high-level functions for file and file collection manipulation, such as copying and moving files.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [shutil module documentation](https://docs.python.org/3/library/shutil.html)
-
-### CustomTkinter
-**Description**: A library that provides a modernized version of Tkinter to create graphical interfaces with a more contemporary design.  
-**License**: MIT License  
-[Link to License](https://opensource.org/licenses/MIT)  
-**Credits**: [CustomTkinter GitHub](https://github.com/TomSchimansky/CustomTkinter)
-
-### filedialog
-**Description**: A module from Tkinter, part of the Python standard library, used to create dialog boxes for opening or saving files.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [filedialog module documentation](https://docs.python.org/3/library/tkinter.filedialog.html)
-
-### datetime
-**Description**: A module from the Python standard library for manipulating dates and times.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [datetime module documentation](https://docs.python.org/3/library/datetime.html)
-
-### threading
-**Description**: A module from the Python standard library that provides support for running threads, allowing multiple tasks to run simultaneously.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [threading module documentation](https://docs.python.org/3/library/threading.html)
-
-### webbrowser
-**Description**: A module from the Python standard library that allows control of the web browser directly from code, such as opening URLs.  
-**License**: Python Software Foundation License  
-[Link to License](https://opensource.org/licenses/Python-2.0)  
-**Credits**: [webbrowser module documentation](https://docs.python.org/3/library/webbrowser.html)
-
-
-
-
-
-
+License: GPL-3.0.
