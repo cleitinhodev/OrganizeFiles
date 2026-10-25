@@ -1,3 +1,4 @@
+import unicodedata
 from datetime import datetime
 from pathlib import Path
 
@@ -6,11 +7,13 @@ from organizefiles.core import Action, Mode, PlanOptions, build_plan
 
 
 def rel(plan, item):
-    return item.dst.relative_to(plan.root).as_posix() if item.dst else None
+    if not item.dst:
+        return None
+    return unicodedata.normalize("NFC", item.dst.relative_to(plan.root).as_posix())
 
 
 def by_name(plan):
-    return {i.src.name: i for i in plan.items}
+    return {unicodedata.normalize("NFC", i.src.name): i for i in plan.items}
 
 
 def test_preview_does_not_touch_disk(folder):

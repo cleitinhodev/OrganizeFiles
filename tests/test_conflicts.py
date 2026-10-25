@@ -1,3 +1,5 @@
+import pytest
+
 from conftest import make
 from organizefiles.core import Mode, PlanOptions, build_plan, execute_plan
 from organizefiles.core.naming import split_name, unique_path
@@ -26,6 +28,8 @@ def test_existing_destination_is_never_overwritten(folder):
 
 def test_case_insensitive_collisions_inside_plan(folder):
     make(folder, "foto.JPG", "1")
+    if (folder / "FOTO.jpg").exists():
+        pytest.skip("sistema de arquivos não diferencia maiúsculas/minúsculas")
     make(folder, "Foto.jpg", "2")
     plan = build_plan(folder, PlanOptions(mode=Mode.CATEGORY))
     names = sorted(i.dst.name for i in plan.moves)
