@@ -66,6 +66,6 @@ def test_blocked_folder_shows_error(window, monkeypatch):
 
 def test_language_and_theme_switch(window):
     window.lang_combo.setCurrentIndex(window.lang_combo.findData("en"))
-    assert window.analyze_btn.text() == "Analyze & preview"
+    assert window.analyze_btn.text() == "Analyze and preview"
     window.apply_theme("light")
     window.apply_theme("dark")
